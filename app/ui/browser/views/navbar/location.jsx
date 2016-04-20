@@ -15,6 +15,17 @@ import React, { PropTypes, Component } from 'react';
 import Style from '../../browser-style';
 import Btn from './btn';
 
+import Select from 'react-select';
+
+var options = [
+	{ value: 'one', label: 'One' },
+	{ value: 'two', label: 'Two' },
+];
+
+function logChange(val) {
+	console.log("Selected: " + val);
+}
+
 import { fixURL, getCurrentWebView } from '../../browser-util';
 
 // Pref off completions for now since the view doesn't do anything besides
@@ -187,6 +198,13 @@ class Location extends Component {
               {page.title}
             </span>
           </div>
+
+          <Select
+          	name="form-field-name"
+          	value="one"
+          	options={options}
+          	onChange={logChange}
+          />
           <input id="urlbar-input"
             className={INPUT_BAR_STYLE}
             hidden={!showURLBar}
