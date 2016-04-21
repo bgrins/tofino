@@ -47,6 +47,7 @@ const LOCATION_BAR_AUTOCOMPLETE_STYLE = Style.registerStyle({
   right: 0,
   top: '100%',
   zIndex: 2,
+  flexDirection: 'column',
 });
 
 const LOCATION_BAR_BUTTONS_STYLE = Style.registerStyle({
@@ -83,6 +84,8 @@ class Location extends Component {
 
     this.state = {
       showURLBar: false,
+      focusedURLBar: false,
+      focusedResultIndex: -1,
     };
 
     this.handleTitleClick = this.handleTitleClick.bind(this);
@@ -147,25 +150,40 @@ class Location extends Component {
     this.setState({ focusedURLBar: false });
   }
 
-  handleURLBarKeyDown(ev) {
+  handleURLBarKeyDown(maxCompletions, ev) {
     if (ev.keyCode === 13) { // enter
       this.props.navigateTo(fixURL(ev.target.value));
     } else if (ev.keyCode === 27) { // esc
       this.props.onLocationReset();
       ev.target.select();
+    } else if (ev.keyCode === 40 && maxCompletions > 0) { // down
+      const focusedResultIndex =
+        this.state.focusedResultIndex >= maxCompletions - 1 ? 0 : this.state.focusedResultIndex + 1;
+      this.setState({ focusedResultIndex });
+      ev.preventDefault();
+    } else if (ev.keyCode === 38 && maxCompletions > 0) { // up
+      const focusedResultIndex =
+        this.state.focusedResultIndex <= 0 ? maxCompletions - 1 : this.state.focusedResultIndex - 1;
+      this.setState({ focusedResultIndex });
+      ev.preventDefault();
     }
   }
 
   render() {
     const { page, profile } = this.props;
     const urlValue = page.userTyped !== null ? page.userTyped : page.location;
-    const { showURLBar, focusedURLBar } = this.state;
+    const { showURLBar, focusedURLBar, focusedResultIndex } = this.state;
 
     let completions = null;
-    if (SHOW_COMPLETIONS && profile.completions.get(urlValue) && focusedURLBar) {
-      const results = profile.completions.get(urlValue).map((completion) =>
-        <div>{completion}</div>
-      );
+    const completionsForURL = profile.completions.get(urlValue);
+    if (SHOW_COMPLETIONS && completionsForURL && focusedURLBar) {
+      const results = completionsForURL.map((completion, i) => {
+        if (focusedResultIndex === i) {
+          return <div style={{ background: 'red' }}>{completion}</div>;
+        }
+
+        return <div>{completion}</div>;
+      });
       completions = <div className={LOCATION_BAR_AUTOCOMPLETE_STYLE}>{results}</div>;
     }
 
@@ -196,7 +214,9 @@ class Location extends Component {
             onFocus={this.handleURLBarFocus}
             onBlur={this.handleURLBarBlur}
             onChange={this.props.onLocationChange}
-            onKeyDown={this.handleURLBarKeyDown}
+            onKeyDown={(e) =>
+              this.handleURLBarKeyDown(completionsForURL && completionsForURL.length, e)
+            }
             onContextMenu={this.props.onLocationContextMenu} />
           <Btn title="Bookmark"
             className={LOCATION_BAR_BUTTONS_STYLE}
