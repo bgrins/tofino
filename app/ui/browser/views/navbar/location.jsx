@@ -128,6 +128,9 @@ class Location extends Component {
     if (this.state.showURLBar && document.activeElement !== this.refs.input) {
       this.refs.input.focus();
     }
+    if (this.state.focusedResultIndex != -1 && this.completionsForURL) {
+      this.refs.input.value = this.completionsForURL[this.state.focusedResultIndex];
+    }
   }
 
   getBookmarkIcon() {
@@ -178,10 +181,15 @@ class Location extends Component {
       this.props.onLocationReset();
       ev.target.select();
     } else if (ev.keyCode === 40 && maxCompletions > 0) { // down
-      const focusedResultIndex =
-        this.state.focusedResultIndex >= maxCompletions - 1 ? 0 : this.state.focusedResultIndex + 1;
-      this.setState({ focusedResultIndex });
-      ev.preventDefault();
+      if (maxCompletions > 0) {
+        const focusedResultIndex =
+          this.state.focusedResultIndex >= maxCompletions - 1 ? 0 : this.state.focusedResultIndex + 1;
+        this.setState({ focusedResultIndex });
+        ev.preventDefault();
+      } else {
+        console.log(ev.target);
+        this.props.onLocationChange(ev);
+      }
     } else if (ev.keyCode === 38 && maxCompletions > 0) { // up
       const focusedResultIndex =
         this.state.focusedResultIndex <= 0 ? maxCompletions - 1 : this.state.focusedResultIndex - 1;
@@ -190,12 +198,22 @@ class Location extends Component {
     }
   }
 
+  get urlValue() {
+    return this.props.page.userTyped !== null ?
+                this.props.page.userTyped :
+                this.props.page.location;
+  }
+
+  get completionsForURL() {
+    return this.props.profile.completions.get(this.urlValue);
+  }
+
   render() {
-    const { page, profile } = this.props;
-    const urlValue = page.userTyped !== null ? page.userTyped : page.location;
+    const { page } = this.props;
+    const urlValue = this.urlValue;
+    const completionsForURL = this.completionsForURL;
 
     let completions = null;
-    const completionsForURL = profile.completions.get(urlValue);
     if (SHOW_COMPLETIONS && completionsForURL && this.state.focusedURLBar) {
       const results = completionsForURL.map((completion, i) => {
         if (this.state.focusedResultIndex === i) {
@@ -232,12 +250,13 @@ class Location extends Component {
             hidden={!this.state.showURLBar}
             type="url"
             ref="input"
-            defaultValue={this.props.page.userTyped !== null
-              ? this.props.page.userTyped
-              : this.props.page.location}
+            defaultValue={this.urlValue}
             onFocus={this.handleURLBarFocus}
             onBlur={this.handleURLBarBlur}
-            onChange={this.props.onLocationChange}
+            onChange={(ev) => {
+              this.setState({focusedResultIndex: -1});
+              this.props.onLocationChange(ev);
+            }}
             onKeyDown={(e) =>
               this.handleURLBarKeyDown(e, completionsForURL && completionsForURL.length)
             }
