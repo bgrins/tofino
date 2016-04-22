@@ -224,7 +224,7 @@ class Location extends Component {
             onClick={this.handleTitleClick}
             onFocus={this.handleTitleFocus}>
             <span>
-              {this.props.page.title}
+              {this.props.page.title || urlValue}
             </span>
           </div>
           <input id="urlbar-input"
