@@ -86,7 +86,8 @@
     "spectron": "2.37.0",
     "through2": "2.0.1",
     "tmp": "0.0.28",
-    "vinyl-fs": "2.4.2"
+    "vinyl-fs": "2.4.2",
+    "why-did-you-update": "0.0.8"
   },
   "engines": {
     "node": ">=5.8.0"

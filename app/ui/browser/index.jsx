@@ -45,6 +45,12 @@ if (BUILD_CONFIG.test) {
   ipcRenderer.store = store;
 }
 
+
+if (BUILD_CONFIG.development) {
+  const { whyDidYouUpdate } = require('why-did-you-update');
+  whyDidYouUpdate(React);
+}
+
 const chrome = (
   <Provider store={store}>
     <App />
