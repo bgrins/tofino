@@ -32,6 +32,15 @@ const BROWSER_WINDOW_STYLE = Style.registerStyle({
   height: '100%',
 });
 
+const BOTTOM_CONTAINER_STYLE = Style.registerStyle({
+  flexDirection: 'row',
+  flex: 1,
+});
+
+const SIDEBAR_STYLE = Style.registerStyle({
+  width: '100px',
+});
+
 class BrowserWindow extends Component {
   componentWillMount() {
     this.webViewController = new WebViewController(() => this.props.pages);
@@ -102,9 +111,11 @@ class BrowserWindow extends Component {
         <BrowserChrome page={currentPage}
           {...this.props}
           {...browserChromeMethods} />
-        <BrowserContent currentPageIndex={currentPageIndex}
-          webViewController={webViewController}
-          {...this.props} />
+        <div className={BOTTOM_CONTAINER_STYLE}>
+          <BrowserContent currentPageIndex={currentPageIndex}
+            webViewController={webViewController}
+            {...this.props} />
+        </div>
         <DeveloperBar />
       </div>
     );
@@ -134,7 +145,7 @@ export default connect(mapStateToProps)(BrowserWindow);
 
 function attachIPCRendererListeners(browserView) {
   const { webViewController } = browserView;
-  const { props: { dispatch } } = browserView;
+  const { props: { dispatch, currentPage } } = browserView;
 
   ipcRenderer.on('select-tab-index', (_, index) => {
     const page = browserView.props.pages.get(index);
@@ -160,6 +171,11 @@ function attachIPCRendererListeners(browserView) {
   ipcRenderer.on('show-history', () => dispatch(actions.createTab(contentURLs.HISTORY_PAGE)));
   ipcRenderer.on('show-credits', () => dispatch(actions.createTab(contentURLs.CREDITS_PAGE)));
   ipcRenderer.on('focus-url-bar', () => {});
+  ipcRenderer.on('show-sidebar', () => {
+    dispatch(actions.setPageDetails(browserView.props.currentPage.id, {
+      isShowingSidebar: !browserView.props.currentPage.isShowingSidebar,
+    }));
+  });
   ipcRenderer.on('open-bookmark', (_, bookmark) => dispatch(actions.createTab(bookmark.location)));
 
   ipcRenderer.on('capture-page', () =>

@@ -35,6 +35,7 @@ export class Page extends Immutable.Record({
   title: 'New Tab',
   state: false,
   isSearching: false,
+  isShowingSidebar: false,
   canGoBack: false,
   canGoForward: false,
   canRefresh: false,
