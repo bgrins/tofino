@@ -35,6 +35,7 @@
     "immutable": "3.7.6",
     "microtime-fast": "1.0.2",
     "morgan": "1.7.0",
+    "node-bing-api": "^2.4.1",
     "react": "15.1.0",
     "react-dom": "15.1.0",
     "react-free-style": "2.1.1",

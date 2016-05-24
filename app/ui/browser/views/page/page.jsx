@@ -17,6 +17,7 @@ import { Page as PageModel } from '../../model';
 
 import Status from './status';
 import Search from './search';
+import Sidebar from './sidebar';
 
 import { fixURL } from '../../browser-util';
 import { menuWebViewContext } from '../../actions/external';
@@ -93,14 +94,24 @@ class Page extends Component {
       this.refs.webview.send('get-contextmenu-data', { x, y });
     };
 
+    let sidebar = null;
+    if (this.props.page.isShowingSidebar) {
+      sidebar = <Sidebar
+        webViewController={this.props.webViewController}
+        page={this.props.page}
+        dispatch={this.props.dispatch}
+        setLocation={(location) => { this.refs.webview.setAttribute('src', fixURL(location)); }} />;
+    }
+
     return (
       <div className={`page ${PAGE_STYLE} ${this.props.isActive ? 'active-browser-page' : ''}`}
         data-page-state={this.props.page.state}>
+        {sidebar}
         <Search hidden={!this.props.page.isSearching} />
         <webview is="webview"
           ref="webview"
           class={`webview-${this.props.page.id} ${WEB_VIEW_STYLE}`}
-          preload="../../shared/preload/content.js"
+          preload={'../../shared/preload/content.js'}
           guestInstanceId={this.props.page.guestInstanceId}
           onContextMenu={requestContextData} />
         <Status page={this.props.page} />
