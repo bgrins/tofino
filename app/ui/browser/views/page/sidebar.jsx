@@ -67,26 +67,31 @@ const Sidebar = React.createClass({
   },
   componentDidMount() {
     // console.log("componentDidMount", this.props.page.location);
-    this.fetchResults(this.props.page.location);
+    const loc = this.fixURL(this.props.page.location);
+    this.fetchResults(loc);
+    this.setState({
+      location: loc,
+    });
   },
 
   componentWillReceiveProps(nextProps) {
     // console.log("componentWillReceiveProps", this.props.page.location, this.state.location, nextProps.page.location);
-    let loc = this.fixURL(nextProps.page.location);
+    const loc = this.fixURL(nextProps.page.location);
     if (loc !== this.state.location) {
-      this.setState({
-        location: loc,
-      });
       this.fetchResults(loc);
       this.refs.container.scrollTop = 0;
     }
+    this.setState({
+      location: loc,
+    });
   },
 
   // Return a URL but without query string, hash, etc.
   fixURL(url) {
     try {
       const parsed = require("url").parse(url);
-      return parsed.protocol + "//" + parsed.host + parsed.pathname;
+      const search = parsed.search || "";
+      return parsed.protocol + "//" + parsed.host + parsed.pathname + search;
     } catch (e) {
       return url;
     }
@@ -189,12 +194,14 @@ const Sidebar = React.createClass({
     } else {
       allInboundResults = this.state.inboundLinkResults.map(r => this.renderResult(r));
     }
+
     return (
       <div
         ref="container"
         className={SIDEBAR_STYLE}>
         <div className={RESULT_TYPE_CONTAINER_STYLE}>
           <h3 className={RESULT_TYPE_STYLE}
+            title={`Showing results for ${this.state.location}`}
             style={this.state.showInbound ? { background: 'orangered' } : null}
             onClick={() => { this.setState({ showInbound: true }); }}>
           Links to this</h3>
