@@ -132,6 +132,11 @@ const Sidebar = React.createClass({
       console.log("cached fetchResults complete for " + loc, cachedResults);
     }
 
+    // Prevent exact matches to this page.
+    inboundLinkResults = inboundLinkResults.filter(result => {
+      return result.Url !== loc;
+    });
+
     this.setState({
       inboundLinkResults,
     });
@@ -191,7 +196,7 @@ const Sidebar = React.createClass({
   fetchInboundResults(loc) {
     return new Promise(resolve => {
       Bing.web(`"${loc}"`, {
-        top: 15,  // Number of results (max 50)
+        top: 50,  // Number of results (max 50)
         // skip: 0,   // Skip first N results
         adult: 'Strict',
         // options: ['DisableLocationDetection'],
