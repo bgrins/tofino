@@ -2,6 +2,8 @@
 import React, { PropTypes, Component } from 'react';
 import Style from '../../../shared/style';
 import * as actions from '../../actions/main-actions';
+import tld from 'tldjs';
+import url from 'url';
 
 let cachedResults = { };
 try {
@@ -97,13 +99,30 @@ const Sidebar = React.createClass({
   },
 
   // Return a URL but without query string, hash, etc.
-  fixURL(url) {
+  fixURL(input) {
     try {
-      const parsed = require("url").parse(url);
-      const search = parsed.search || "";
-      return parsed.protocol + "//" + parsed.host + parsed.pathname + search;
+      const parsed = url.parse(input);
+      const search = parsed.search || '';
+      const base = `${parsed.protocol}//${parsed.host}${parsed.pathname}`;
+
+      // Example: www.amazon.co.uk
+      const domain = (tld.getDomain(input) || '').toLowerCase(); // amazon.co.uk
+      const publicSuffix = tld.getPublicSuffix(input) || ''; // co.uk
+      const domainNoTld = domain.slice(0, -(publicSuffix.length + 1)); // amazon
+      // console.log(domain, publicSuffix, domainNoTld);
+      // XXX: pick up here
+
+      // Special casing for various sites.  TODO: don't do this this
+      if (domainNoTld === 'amazon') {
+        // Amazon puts a bunch of things in the query string that prevent
+        // search api from finding anything.
+        return base;
+      }
+
+      return base + search;
     } catch (e) {
-      return url;
+      console.log('Caught error processing URL', e);
+      return input;
     }
   },
 
