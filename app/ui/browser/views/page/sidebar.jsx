@@ -39,6 +39,7 @@ const RESULT_TYPE_STYLE = Style.registerStyle({
 const RESULT_LIST_STYLE = Style.registerStyle({
   flexDirection: 'column',
   flexShrink: 0,
+  padding: '3px 5px',
 });
 
 const RESULT_CONTAINER_STYLE = Style.registerStyle({
@@ -52,6 +53,11 @@ const RESULT_MESSAGE_STYLE = Style.registerStyle({
   lineHeight: 1,
 });
 
+const RESULT_URL_STYLE = Style.registerStyle({
+  textOverflow: 'ellipsis',
+  overflow: 'hidden',
+});
+
 const RESULT_HEADER_STYLE = Style.registerStyle({
   margin: '5px 0 0 0',
 });
@@ -63,6 +69,7 @@ const Sidebar = React.createClass({
       location: null,
       latitude: null,
       longitude: null,
+      errorFetchingInboundResults: false,
       fetchingInboundResults: false,
       fetchingNearbyResults: false,
       showInbound: true,
@@ -151,14 +158,23 @@ const Sidebar = React.createClass({
       console.log("cached fetchResults complete for " + loc, cachedResults);
     }
 
-    // Prevent exact matches to this page.
-    inboundLinkResults = inboundLinkResults.filter(result => {
-      return result.Url !== loc;
-    });
+    if (!inboundLinkResults) {
+      this.setState({
+        errorFetchingInboundResults: true,
+        inboundLinkResults: [],
+      });
+    } else {
+      // Prevent exact matches to this page.
+      inboundLinkResults = inboundLinkResults.filter(result => {
+        return result.Url !== loc;
+      });
 
-    this.setState({
-      inboundLinkResults,
-    });
+      this.setState({
+        errorFetchingInboundResults: false,
+        inboundLinkResults,
+      });
+    }
+
   },
 
   getGeolocation() {
@@ -247,7 +263,8 @@ const Sidebar = React.createClass({
           href={result.Url}
           title={result.Title}>{result.Title.substring(0, 80)}</a>
       </h2>
-      <cite>{result.DisplayUrl}</cite>
+      <cite className={RESULT_URL_STYLE}
+        title={result.Url}>{result.DisplayUrl}</cite>
       <div>
         {result.Description}
       </div>
@@ -265,7 +282,7 @@ const Sidebar = React.createClass({
           <span>{result.Title}>{result.Title.substring(0, 80)}</span>
         )}
       </h2>
-      <cite>{result.Categories}</cite>
+      <cite className={RESULT_URL_STYLE}>{result.Categories}</cite>
       <div>
         {result.Description}
       </div>
@@ -278,6 +295,8 @@ const Sidebar = React.createClass({
     if (this.state.fetchingInboundResults) {
       inboundMessage = (<div className={RESULT_MESSAGE_STYLE}>Searching the web
         &nbsp;<i className="fa fa-spinner fa-pulse" /></div>);
+    } else if (this.state.errorFetchingInboundResults) {
+      inboundMessage = (<div className={RESULT_MESSAGE_STYLE}>Error fetching results</div>);
     } else if (!this.state.inboundLinkResults.length) {
       inboundMessage = (<div className={RESULT_MESSAGE_STYLE}>Nothing to show</div>);
     } else {
