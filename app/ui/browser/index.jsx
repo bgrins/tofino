@@ -24,6 +24,15 @@ window.onerror = (_message, _source, _lineno, _colno, _error) => {
   onWindowReady(true);
 };
 
+var XFooProto = Object.create(HTMLElement.prototype);
+XFooProto.createdCallback = function() {
+  this.innerHTML = "<b>I'm an x-foo-with-markup!</b>";
+};
+var XFoo = document.registerElement('x-webview', {prototype: XFooProto});
+
+document.body.appendChild(new XFoo());
+
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
