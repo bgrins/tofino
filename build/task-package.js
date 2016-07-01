@@ -4,7 +4,7 @@
 import fs from 'fs-promise';
 import path from 'path';
 import os from 'os';
-import packager from 'electron-packager';
+import builder from 'electron-builder';
 import zipdir from 'zip-dir';
 import { thenify } from 'thenify-all';
 
@@ -15,7 +15,7 @@ import { getElectronVersion, getDownloadOptions } from './utils/electron';
 const ARCH = process.arch;
 const PLATFORM = os.platform();
 
-// electron-packager compares these against paths that are rooted in the root
+// electron-builder compares these against paths that are rooted in the root
 // but begin with "/", e.g. "/README.md"
 const IGNORE = [
   // Ignore hidden files
@@ -40,16 +40,15 @@ const IGNORE = [
 ];
 
 const packageApp = options => new Promise((resolve, reject) => {
-  packager(options, (err, packed) => {
-    if (err) {
-      reject(err);
-    } else {
-      if (packed.length !== 1) {
-        reject(new Error('Expected `electron-packager` to return only one path.'));
-      } else {
-        resolve(packed[0]);
-      }
-    }
+  const downloadOptions = getDownloadOptions();
+  builder.build({
+    devMetadata: options,
+  }).then(() => {
+    console.log("Builder done");
+    resolve();
+  }, (e) => {
+    console.log("Builder error", e);
+    reject(e);
   });
 });
 
@@ -65,6 +64,11 @@ export default async function() {
     arch: ARCH,
     platform: PLATFORM,
     ignore: IGNORE,
+    directories: {
+      project: '.',
+      app: '.',
+      output: Const.PACKAGED_DIST_DIR,
+    },
     prune: true,
     version: electronVersion,
     dir: Const.ROOT,
@@ -73,9 +77,10 @@ export default async function() {
     download: downloadOptions,
   });
 
-  const packageName = `${manifest.name}-${manifest.version}-${PLATFORM}-${ARCH}.zip`;
-  const packagedZipPath = path.join(Const.PACKAGED_DIST_DIR, packageName);
-
-  const buffer = await thenify(zipdir)(packagedAppPath);
-  return fs.writeFile(packagedZipPath, buffer);
+  return Promise.resolve();
+  // const packageName = `${manifest.name}-${manifest.version}-${PLATFORM}-${ARCH}.zip`;
+  // const packagedZipPath = path.join(Const.PACKAGED_DIST_DIR, packageName);
+  //
+  // const buffer = await thenify(zipdir)(packagedAppPath);
+  // return fs.writeFile(packagedZipPath, buffer);
 };

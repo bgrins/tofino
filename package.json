@@ -1,6 +1,7 @@
 {
   "name": "tofino",
   "version": "0.1.0",
+  "author": "mozilla",
   "description": "Experimental prototype",
   "main": "lib/main/index.js",
   "repository": "https://github.com/mozilla/tofino",
@@ -22,6 +23,29 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "install": "node build/main.js --build-deps",
     "postinstall": "node build/main.js --build"
+  },
+  "build": {
+      "appId": "tofino",
+      "app-category-type": "web",
+      "electronVersion": "1.2.2",
+      "dmg": {
+        "contents": [
+          {
+            "x": 410,
+            "y": 150,
+            "type": "link",
+            "path": "/Applications"
+          },
+          {
+            "x": 130,
+            "y": 150,
+            "type": "file"
+          }
+        ]
+      },
+      "win": {
+        "remoteReleases": "https://github.com/mozilla/tofino"
+      }
   },
   "license": "Apache-2.0",
   "dependencies": {
@@ -68,6 +92,7 @@
     "coveralls": "2.11.9",
     "cross-env": "1.0.8",
     "dirsum": "0.1.1",
+    "electron-builder": "5.10.3",
     "electron-download": "2.1.2",
     "electron-ipc-mock": "0.0.2",
     "electron-mocha": "2.2.1",
