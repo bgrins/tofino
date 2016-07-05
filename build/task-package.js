@@ -60,7 +60,7 @@ export default async function() {
   // packager displays a warning if this property is set.
   delete downloadOptions.version;
 
-  const packagedAppPath = await packageApp({
+  await packageApp({
     arch: ARCH,
     platform: PLATFORM,
     ignore: IGNORE,
@@ -77,10 +77,9 @@ export default async function() {
     download: downloadOptions,
   });
 
-  return Promise.resolve();
-  // const packageName = `${manifest.name}-${manifest.version}-${PLATFORM}-${ARCH}.zip`;
-  // const packagedZipPath = path.join(Const.PACKAGED_DIST_DIR, packageName);
-  //
-  // const buffer = await thenify(zipdir)(packagedAppPath);
-  // return fs.writeFile(packagedZipPath, buffer);
+  const packageName = path.join(Const.PACKAGED_DIST_DIR, `${manifest.name}-${manifest.version}-${PLATFORM}-${ARCH}.zip`);
+  const packagedAppPath = path.join(Const.PACKAGED_DIST_DIR, builder.Platform.current().toString());
+  // const packagedZipPath = path.join(Const.PACKAGED_DIST_DIR, builder.Platform.current().toString());
+  const buffer = await thenify(zipdir)(packagedAppPath);
+  return fs.writeFile(packageName, buffer);
 };
