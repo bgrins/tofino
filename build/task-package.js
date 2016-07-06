@@ -78,8 +78,7 @@ export default async function() {
   });
 
   const packageName = path.join(Const.PACKAGED_DIST_DIR, `${manifest.name}-${manifest.version}-${PLATFORM}-${ARCH}.zip`);
-  const packagedAppPath = path.join(Const.PACKAGED_DIST_DIR, builder.Platform.current().toString());
-  // const packagedZipPath = path.join(Const.PACKAGED_DIST_DIR, builder.Platform.current().toString());
+  const packagedAppPath = path.join(Const.PACKAGED_DIST_DIR, builder.Platform.current().buildConfigurationKey);
   const buffer = await thenify(zipdir)(packagedAppPath);
   return fs.writeFile(packageName, buffer);
 };
