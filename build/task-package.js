@@ -68,13 +68,14 @@ export default async function() {
       app: '.',
       output: Const.PACKAGED_DIST_DIR,
     },
-    prune: true,
     dir: Const.ROOT,
     icon: Const.PACKAGED_ICON,
     out: Const.PACKAGED_DIST_DIR,
     build: {
       electronVersion,
       download: downloadOptions,
+      npmPrune: true,
+      npmRebuild: false,
     },
   });
 
