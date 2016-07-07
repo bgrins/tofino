@@ -63,11 +63,11 @@ const ignored = [
   'babel-eslint',
   'uglify-js',
   'eslint',
-  'eslint-config-airbnb',
-  'eslint-plugin-import',
-  'eslint-plugin-jsx-a11y',
-  'eslint-plugin-react',
-  'react-addons-test-utils',
+  // 'eslint-config-airbnb',
+  // 'eslint-plugin-import',
+  // 'eslint-plugin-jsx-a11y',
+  // 'eslint-plugin-react',
+  // 'react-addons-test-utils',
 ];
 
 describe('packages', () => {
