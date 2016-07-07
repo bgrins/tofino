@@ -20,11 +20,12 @@ import fs from 'fs-promise';
 import microtime from 'microtime-fast';
 import path from 'path';
 import escaper from 'true-html-escape';
+import { DB, verbose } from 'promise-sqlite';
 
 import { Bookmark } from '../../shared/model';
 import { ProfileStorageSchemaV5 } from './profile-schema';
-import { DB, verbose } from './sqlite';
 import { SessionEndReason, SessionStartReason, SnippetSize, StarOp, VisitType } from './storage';
+import { logger } from '../../shared/logging';
 
 /**
  * Public API:
@@ -54,7 +55,7 @@ export class ProfileStorage {
     const filePath = path.join(dir, 'browser.db');
 
     await fs.mkdirp(dir);
-    const db = await DB.open(filePath);
+    const db = await DB.open(filePath, { logger });
     return new ProfileStorage(db).init();
   }
 

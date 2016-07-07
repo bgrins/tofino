@@ -15,7 +15,9 @@ import {
   mori,
   helpers,
 } from 'datascript-mori';
-import * as sqlite from './user-agent-service/sqlite';
+import * as sqlite from 'promise-sqlite';
+
+import { logger } from '../shared/logging';
 
 const d = datascript.core;
 
@@ -80,7 +82,7 @@ export class PlacesImporter {
 
   static async importFromPlaces(pathToPlaces, datomStorage, limit = undefined) {
     // The WAL is enabled, so opening read-only leaves orphaned .shm/.wal files.
-    const placesDB = await sqlite.DB.open(pathToPlaces);
+    const placesDB = await sqlite.DB.open(pathToPlaces, { logger });
     try {
       const importer = new PlacesImporter(placesDB);
       await importer.buildPlaceMap(limit);
