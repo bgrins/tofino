@@ -27,7 +27,6 @@
   "build": {
       "appId": "tofino",
       "app-category-type": "web",
-      "electronVersion": "1.2.2",
       "dmg": {
         "contents": [
           {
