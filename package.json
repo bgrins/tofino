@@ -27,6 +27,7 @@
   "build": {
       "appId": "tofino",
       "app-category-type": "web",
+      "asar": false,
       "dmg": {
         "contents": [
           {
