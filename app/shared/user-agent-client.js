@@ -56,6 +56,22 @@ class UserAgentClient extends EventEmitter {
   }
 
   /**
+   * Similar to electron ipcRenderer.send, but using websocket transport.
+   */
+  async ipcSend(data) {
+    if (!this._connect) {
+      throw new Error('Must connect before sending.');
+    }
+    await this._connect;
+
+    const packet = {
+      type: 'ipc',
+      data,
+    };
+    this.ws.send(JSON.stringify(packet));
+  }
+
+  /**
    * Connects to the remote User Agent Service, and resolves a promise
    * upon completion. Can be called multiple times and caches the connection
    * promise so consumers can always call `await client.connect(ops)` safely.
@@ -104,10 +120,11 @@ class UserAgentClient extends EventEmitter {
 
     await this._connect;
 
-    this.ws.on('message', (data) => {
-      data = JSON.parse(data);
+    this.ws.addEventListener('message', (e) => {
+      const data = JSON.parse(e.data);
       const message = data.message;
       delete data.message;
+        console.log("Received message", e, message, data);
       this.emit(message, data);
     });
 
@@ -122,18 +139,24 @@ class UserAgentClient extends EventEmitter {
     // `backoff` module.
     const attempt = new Promise((resolve, reject) => {
       const ws = new WebSocket(url);
-      ws.on('error', reject);
-      ws.on('open', () => {
-        // The first message should be protocol information
-        ws.once('message', (data) => {
-          data = JSON.parse(data);
+
+      ws.addEventListener('error', () => {
+        reject();
+      });
+      ws.addEventListener('open', () => {
+        // The first message should be protocol information.
+        // Use onmessage instead of addEventListener because the node ws
+        // library doesn't support removeEventListener.
+        ws.onmessage = (e) => {
+          ws.onmessage = null;
+          const data = JSON.parse(e.data);
 
           if (data.message !== 'protocol' || data.version !== 'v1') {
             reject(new Error(`Incorrect message ${JSON.stringify(data)}`));
             return;
           }
           resolve(ws);
-        });
+        };
       });
     });
 

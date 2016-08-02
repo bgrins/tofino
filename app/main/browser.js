@@ -56,6 +56,10 @@ app.on('ready', async function() {
   });
 });
 
+userAgentClient.on('ipc', (data) => {
+  console.log("RECEIVED IPC", data);
+});
+
 // Unregister all shortcuts.
 app.on('will-quit', () => globalShortcut.unregisterAll());
 

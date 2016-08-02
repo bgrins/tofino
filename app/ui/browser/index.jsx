@@ -19,6 +19,10 @@ import { ipcRenderer } from '../../shared/electron';
 // will then show the window (if it hasn't already) which allows the Browser devtools to debug the
 // underlying issue.
 const onWindowReady = (error = false) => ipcRenderer.send('window-ready', error);
+const GET_PARAMS = new URLSearchParams(window.location.search.slice(1));
+const port = GET_PARAMS.get('port');
+const host = GET_PARAMS.get('host');
+const version = GET_PARAMS.get('version');
 
 window.onerror = (_message, _source, _lineno, _colno, _error) => {
   onWindowReady(true);
@@ -89,11 +93,9 @@ userAgentClient.on('diff', (command) => {
   store.dispatch(command);
 });
 
-// Wait until the main process negotiates an address for the UA service, and
-// then subsequently connect.
-ipcRenderer.on('user-agent-service-info', (_, { port, version, host }) =>
-  userAgentClient.connect({ port, version, host }));
-
-// Set max listeners to Infinity, because each new tab will listen to more
-// events, and we'll intentionally go beyond the 10 listener default.
-ipcRenderer.setMaxListeners(Infinity);
+userAgentClient.connect({ port, version, host });
+userAgentClient.ipcSend({
+  foo: 'bar',
+}).then(() => {
+    console.log('IPC send complete');
+});

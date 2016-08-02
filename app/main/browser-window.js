@@ -56,6 +56,10 @@ export async function createBrowserWindow(userAgentClient, onload) {
     minHeight: 128,
     frame: false,
     show: false,
+    // @TODO: remove remaining node integration in the renderer and turn it off.
+    // webPreferences: {
+      // nodeIntegration: false,
+    // },
   });
   browser.scope = scope;
 
@@ -63,9 +67,6 @@ export async function createBrowserWindow(userAgentClient, onload) {
     if (onload) {
       onload();
     }
-    // The client needs to know where the UA service is in order to connect
-    // to it, and subsequently fire its 'window-ready' event.
-    browser.webContents.send('user-agent-service-info', { port, host, version });
   });
 
   // 'window-ready' is called if an error occurred loading the client, or once
@@ -81,7 +82,7 @@ export async function createBrowserWindow(userAgentClient, onload) {
   });
 
   // Start loading browser chrome.
-  browser.loadURL(BROWSER_CHROME_URL);
+  browser.loadURL(BROWSER_CHROME_URL + '?port=' + port + '&host=' + host + '&version=' + version);
 
   hotkeys.bindBrowserWindowHotkeys(browser);
   browser.once('closed', () => {

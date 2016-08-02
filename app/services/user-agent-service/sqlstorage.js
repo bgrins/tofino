@@ -20,7 +20,7 @@ import fs from 'fs-promise';
 import microtime from 'microtime-fast';
 import path from 'path';
 import escaper from 'true-html-escape';
-import { DB, verbose } from 'promise-sqlite';
+import { DB } from 'promise-sqlite';
 
 import { Bookmark } from '../../shared/model';
 import { ProfileStorageSchemaV5 } from './profile-schema';
@@ -50,8 +50,6 @@ export class ProfileStorage {
    * @returns {Promise}
    */
   static async open(dir) {
-    verbose();
-
     const filePath = path.join(dir, 'browser.db');
 
     await fs.mkdirp(dir);

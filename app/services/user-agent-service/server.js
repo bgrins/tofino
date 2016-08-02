@@ -37,6 +37,7 @@ const allowCrossDomain = contentServiceOrigin => function(req, res, next) {
 };
 
 function configure(app, router, storage, contentServiceOrigin) {
+    console.log("MESSAGE FROM SERVER");
   app.use(allowCrossDomain(contentServiceOrigin));
 
   async function initial() {
@@ -61,6 +62,22 @@ function configure(app, router, storage, contentServiceOrigin) {
       type: 'initial',
       payload: await initial(),
     }));
+
+    ws.send(JSON.stringify({
+      message: 'brian',
+      type: 'initial',
+      payload: await initial(),
+    }));
+
+    ws.on('message', (data) => {
+      console.log("MESSAGE FROM SERVER UA", data);
+      wsClients.forEach((w) => {
+        w.send(JSON.stringify({
+          message: 'ipc',
+          foo: 'bar',
+        }));
+      });
+    });
 
     ws.on('close', () => {
       const index = wsClients.indexOf(ws);
