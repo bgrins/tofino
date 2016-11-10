@@ -10,7 +10,7 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import Style from '../../../shared/style';
@@ -25,6 +25,9 @@ const BROWSER_WINDOW_STYLE = Style.registerStyle({
   height: '100%',
   background: 'var(--theme-window-background)',
 });
+const PRIVATE_WINDOW_STYLE = Style.registerStyle({
+  background: 'var(--theme-private-window-background)',
+});
 
 class BrowserWindow extends Component {
   constructor(props) {
@@ -33,9 +36,12 @@ class BrowserWindow extends Component {
   }
 
   render() {
+
+    let classes = this.props.isPrivate ? BROWSER_WINDOW_STYLE + ' ' + PRIVATE_WINDOW_STYLE :
+                                         BROWSER_WINDOW_STYLE;
     return (
       <div id="browser-window"
-        className={BROWSER_WINDOW_STYLE}>
+        className={classes}>
         <ChromeArea />
         <ContentArea />
         <Overview />
@@ -45,5 +51,9 @@ class BrowserWindow extends Component {
 }
 
 BrowserWindow.displayName = 'BrowserWindow';
+
+BrowserWindow.propTypes = {
+  isPrivate: PropTypes.bool,
+};
 
 export default BrowserWindow;

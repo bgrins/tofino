@@ -29,6 +29,7 @@ const menus = {
     submenu: [
       items.newTab,
       items.newWindow,
+      items.newPrivateWindow,
       items.capturePage,
     ],
   },

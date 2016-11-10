@@ -33,6 +33,14 @@ function openNewWindow() {
     electron.ipcMain.emit('new-browser-window');
   });
 }
+function openNewPrivateWindow() {
+  // This setImmediate avoids an interaction between the main process and child
+  // rendering process event loops that results in the window only being shown after IO
+  // events have happened, which can be quite delayed.
+  setImmediate(() => {
+    electron.ipcMain.emit('new-private-browser-window');
+  });
+}
 
 items.separator = {
   type: 'separator',
@@ -54,6 +62,12 @@ items.newWindow = {
   label: 'New Window',
   accelerator: 'CmdOrCtrl+N',
   click: openNewWindow,
+};
+
+items.newPrivateWindow = {
+  label: 'New Private Window',
+  accelerator: 'CmdOrCtrl+P',
+  click: openNewPrivateWindow,
 };
 
 items.capturePage = {

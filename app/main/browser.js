@@ -87,6 +87,14 @@ ipc.on('new-browser-window', async () => {
   menu.buildAppMenu(menuData);
 });
 
+ipc.on('new-private-browser-window', async () => {
+  const bw = await BW.createBrowserWindow({
+    isPrivate: true,
+  });
+  bw.webContents.send('new-tab');
+  menu.buildAppMenu(menuData);
+});
+
 ipc.on('close-browser-window', BW.onlyWhenFromBrowserWindow(async bw => {
   await BW.closeBrowserWindow(bw);
 }));

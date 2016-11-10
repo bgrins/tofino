@@ -20,6 +20,7 @@ import * as UIEffects from './actions/ui-effects';
 
 export default function({ store }) {
   const container = document.getElementById('browser-container');
+  const isPrivate = (new URLSearchParams(window.location.search)).has('private');
 
   // Track details about the currently focused elements in the app state.
   document.addEventListener('blur', () => {
@@ -37,5 +38,5 @@ export default function({ store }) {
   // We start rendering before we connect to the UA service and before we receive
   // the initial state so that if an error occurs while we connect, we at least
   // have some UI in place.
-  ReactDOM.render(<Provider store={store}><App /></Provider>, container);
+  ReactDOM.render(<Provider store={store}><App isPrivate={isPrivate} /></Provider>, container);
 }

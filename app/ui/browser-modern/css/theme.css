@@ -2,6 +2,7 @@
   /* Window */
 
   --theme-window-background: linear-gradient(180deg, #fafafa, #ececec 1px, #d3d3d3 40px) fixed;
+  --theme-private-window-background: linear-gradient(180deg, purple 4px, #ececec 3px, #d3d3d3 40px) fixed;
 
   /* Tabbar */
 

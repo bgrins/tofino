@@ -74,7 +74,7 @@ export async function focusOrOpenWindow(url) {
  * Creates a new browser window for the browser chrome, and returns a promise
  * that resolves upon initialization. Takes an optional url to load in the window.
  */
-export async function createBrowserWindow({ windowId, appState } = {}) {
+export async function createBrowserWindow({ windowId, appState, isPrivate } = {}) {
   // TODO: don't abuse the storage layer's session ID generation to produce scopes.
   // Await for `startSession()` here since that ensures we have a connection to
   // the UA service at this point.
@@ -148,7 +148,7 @@ export async function createBrowserWindow({ windowId, appState } = {}) {
   });
 
   // Start loading browser chrome.
-  browser.loadURL(BROWSER_CHROME_URL);
+  browser.loadURL(BROWSER_CHROME_URL + (isPrivate ? '?private=true' : ''));
 
   bindBrowserWindowEvents(browser);
   hotkeys.bindBrowserWindowHotkeys(browser);

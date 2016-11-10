@@ -10,7 +10,7 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 import { StyleUtil } from '../../shared/style';
@@ -23,10 +23,14 @@ class App extends Component {
   }
 
   render() {
-    return <BrowserWindow />;
+    return <BrowserWindow isPrivate={this.props.isPrivate} />;
   }
 }
 
 App.displayName = 'App';
+
+App.propTypes = {
+  isPrivate: PropTypes.bool,
+};
 
 export default StyleUtil.wrap(App);
