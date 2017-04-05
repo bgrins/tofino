@@ -30,6 +30,7 @@ function* createWindow({ meta: runnerConn }) {
   const winId = uuid();
   const frontendParams = querystring.stringify({ runnerConnId, winId, os, platform });
 
+  console.trace();
   yield call([runnerConn, runnerConn.send], SharedActions.commands.fromServer.toRunner.app.window.create({
     winId,
     url: `${CHROME_URL}?${frontendParams}`,

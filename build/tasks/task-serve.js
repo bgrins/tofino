@@ -29,6 +29,7 @@ gulp.task('serve', async () => {
 
   console.log(Paths.BROWSER_RUNNER_DST_MAIN);
   return Promise.all([
+    spawn('electron', Paths.BROWSER_RUNNER_DST_MAIN, args, { logger }),
     spawn('node', Paths.BROWSER_SERVER_DST_MAIN, args, { logger }),
   ]);
 });

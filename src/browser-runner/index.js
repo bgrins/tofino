@@ -10,7 +10,7 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-import electron from 'electron';
+// import electron from 'electron';
 import colors from 'colors/safe';
 
 import logger from './logger';
@@ -22,7 +22,7 @@ import Client from '../shared/util/client';
 import RootSaga from './sagas/root-saga';
 import SharedActions from '../shared/actions/shared-actions';
 
-const app = electron.app;
+// const app = electron.app;
 
 const store = configureStore({ sagas: RootSaga });
 const client = new Client({ endpoint: Endpoints.WS_ROUTE_PROMISE, store, logger });
@@ -31,22 +31,35 @@ if (!Endpoints.USING_EXTERNAL_SERVER) {
   serve();
 }
 
-app.on('ready', async () => {
+async function foo() {
   logger.log(colors.green('Browser runner ready.'));
   await client.listen();
-  await client.send(SharedActions.events.fromRunner.toServer.client.hello({
+  let bar = await client.send(SharedActions.events.fromRunner.toServer.client.hello({
     clientMetaData: {
-      os: process.platform,
+      os: 'foo',//process.platform,
       platform: 'electron',
     },
   }));
-});
+  console.log("Receieved", bar);
+};
 
-app.on('activate', async () => {
-  await client.send(SharedActions.events.fromRunner.toServer.app.activated());
-});
-
-// Bogus event listener used to prevent electron from killing this process
-// when no more browser windows are open. Removing this event listener will
-// cause electron to automatically kill this process in this situation.
-app.on('window-all-closed', () => {});
+foo();
+// app.on('ready', async () => {
+//   logger.log(colors.green('Browser runner ready.'));
+//   await client.listen();
+//   await client.send(SharedActions.events.fromRunner.toServer.client.hello({
+//     clientMetaData: {
+//       os: process.platform,
+//       platform: 'electron',
+//     },
+//   }));
+// });
+//
+// app.on('activate', async () => {
+//   await client.send(SharedActions.events.fromRunner.toServer.app.activated());
+// });
+//
+// // Bogus event listener used to prevent electron from killing this process
+// // when no more browser windows are open. Removing this event listener will
+// // cause electron to automatically kill this process in this situation.
+// app.on('window-all-closed', () => {});

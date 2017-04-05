@@ -5,7 +5,7 @@
     "test": "gulp test",
     "clean": "gulp clean",
     "start": "cross-env NODE_ENV=production gulp build+start --obj-dir-name production",
-    "serve": "cross-env NODE_ENV=production gulp build+serve --obj-dir-name production",
+    "serve": "cross-env NODE_ENV=production LOGGING=on gulp build+serve --obj-dir-name production",
     "dev": "cross-env NODE_ENV=development gulp build+start --obj-dir-name development",
     "dev+logging": "cross-env NODE_ENV=development LOGGING=on gulp build+start --obj-dir-name development",
     "package": "gulp package --obj-dir-name package"

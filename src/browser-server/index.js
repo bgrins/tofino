@@ -43,4 +43,6 @@ server.listen(Endpoints.PORT, Endpoints.HOSTNAME, () => {
   logger.log(
     colors.green('Browser server ready'),
     colors.gray(`hosting at ${Endpoints.HOSTNAME}, listening on port ${Endpoints.PORT}.`));
+  logger.log(
+    colors.green(Endpoints.CHROME_ROUTE));
 });
