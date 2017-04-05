@@ -24,3 +24,8 @@ gulp.task('build+start', gulp.series(
   'build',
   'start',
 ));
+
+gulp.task('build+serve', gulp.series(
+  'build',
+  'serve',
+));
