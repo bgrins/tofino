@@ -18,6 +18,15 @@ import SharedActions from '../../shared/actions/shared-actions';
 const BROWSER_WINDOWS = new Map();
 
 function* createWindow({ meta: client, payload: { winId, url, width, height, style } }) {
+
+  // The runner was only used to initiate a connection and get a valid URL so that the
+  // chrome frontend can be opened in a browser tab. In this case we don't need to do
+  // anything except for printing out the url.
+  if (!electron.BrowserWindow) {
+    console.log("Serving frontend at: " + url);
+    return;
+  }
+
   const win = new electron.BrowserWindow({
     width,
     height,

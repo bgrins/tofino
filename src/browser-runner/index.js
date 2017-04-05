@@ -31,22 +31,33 @@ if (!Endpoints.USING_EXTERNAL_SERVER) {
   serve();
 }
 
-app.on('ready', async () => {
+async function foo() {
   logger.log(colors.green('Browser runner ready.'));
   await client.listen();
   await client.send(SharedActions.events.fromRunner.toServer.client.hello({
     clientMetaData: {
       os: process.platform,
-      platform: 'electron',
+      platform: 'node',
     },
   }));
-});
-
-app.on('activate', async () => {
-  await client.send(SharedActions.events.fromRunner.toServer.app.activated());
-});
+}
+foo();
+// app.on('ready', async () => {
+//   logger.log(colors.green('Browser runner ready.'));
+//   await client.listen();
+//   await client.send(SharedActions.events.fromRunner.toServer.client.hello({
+//     clientMetaData: {
+//       os: process.platform,
+//       platform: 'electron',
+//     },
+//   }));
+// });
+//
+// app.on('activate', async () => {
+//   await client.send(SharedActions.events.fromRunner.toServer.app.activated());
+// });
 
 // Bogus event listener used to prevent electron from killing this process
 // when no more browser windows are open. Removing this event listener will
 // cause electron to automatically kill this process in this situation.
-app.on('window-all-closed', () => {});
+// app.on('window-all-closed', () => {});
