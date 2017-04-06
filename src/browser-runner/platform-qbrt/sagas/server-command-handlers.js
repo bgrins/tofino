@@ -23,7 +23,7 @@ import SharedActions from '../../../shared/actions/shared-actions';
 function create({ payload: { url } }) {
   logger.log(`Chrome frontend hosted at ${url}`);
 
-  spawn('qbrt', 'run', [Paths.DUMMY_RUNNER_DST], { logger });
+  spawn('qbrt', 'run', [url], { logger });
   // opn(url, { app: yargs.argv.browser });
 }
 

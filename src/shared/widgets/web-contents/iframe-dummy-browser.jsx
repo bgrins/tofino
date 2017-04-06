@@ -20,6 +20,7 @@ export default class IframeDummyBrowser extends PureComponent {
   }
 
   componentDidMount() {
+    console.log("Constructor running", window);
     this._iframe.addEventListener('load', () => {
       this.props.onDidStopLoading();
       this.props.onPageTitleSet({ title: 'Loaded' });
@@ -52,6 +53,7 @@ export default class IframeDummyBrowser extends PureComponent {
         is="iframe"
         ref={this.setIframeRef}
         class={this.props.className}
+        mozbrowser="mozbrowser"
         frameborder="0"
       />
     );
