@@ -21,6 +21,10 @@ gulp.task('browser-runner:babel', () =>
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(Paths.BROWSER_RUNNER_DST)));
 
+gulp.task('browser-runner:copy', () =>
+  gulp.src(`${Paths.BROWSER_RUNNER_SRC}/**/*.@(json)`)
+    .pipe(gulp.dest(Paths.BROWSER_RUNNER_DST)));
+
 gulp.task('electron-runner:polyfill', () => {
   const contents = `
     import 'babel-polyfill';
@@ -49,6 +53,7 @@ gulp.task('dummy-runner:polyfill', () => {
 
 gulp.task('browser-runner:build', gulp.series(
   'browser-runner:babel',
+  'browser-runner:copy',
   'electron-runner:polyfill',
   'dummy-runner:polyfill',
 ));

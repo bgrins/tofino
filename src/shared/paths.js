@@ -58,7 +58,8 @@ export const ELECTRON_RUNNER_ENTRY_FILENAME = 'platform-electron/index.js';
 export const ELECTRON_RUNNER_POLYFILL_FILENAME = 'browser-runner-electron-polyfill.js';
 export const ELECTRON_RUNNER_DST_MAIN = path.join(BROWSER_RUNNER_DST, ELECTRON_RUNNER_POLYFILL_FILENAME);
 
-export const DUMMY_RUNNER_ENTRY_FILENAME = 'platform-dummy/index.js';
+export const DUMMY_RUNNER_DST = path.join(BROWSER_RUNNER_DST, 'platform-qbrt');
+export const DUMMY_RUNNER_ENTRY_FILENAME = 'platform-qbrt/index.js';
 export const DUMMY_RUNNER_POLYFILL_FILENAME = 'browser-runner-dummy-polyfill.js';
 export const DUMMY_RUNNER_DST_MAIN = path.join(BROWSER_RUNNER_DST, DUMMY_RUNNER_POLYFILL_FILENAME);
 
