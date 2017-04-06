@@ -62,6 +62,10 @@ export const DUMMY_RUNNER_ENTRY_FILENAME = 'platform-dummy/index.js';
 export const DUMMY_RUNNER_POLYFILL_FILENAME = 'browser-runner-dummy-polyfill.js';
 export const DUMMY_RUNNER_DST_MAIN = path.join(BROWSER_RUNNER_DST, DUMMY_RUNNER_POLYFILL_FILENAME);
 
+export const QBRT_RUNNER_ENTRY_FILENAME = 'platform-qbrt/index.js';
+export const QBRT_RUNNER_POLYFILL_FILENAME = 'browser-runner-qbrt-polyfill.js';
+export const QBRT_RUNNER_DST_MAIN = path.join(BROWSER_RUNNER_DST, QBRT_RUNNER_POLYFILL_FILENAME);
+
 export const BROWSER_SERVER_DIRNAME = 'browser-server';
 export const BROWSER_SERVER_SRC = IS_PACKAGED_BUILD ? undefined : path.join(SRC_DIR, BROWSER_SERVER_DIRNAME);
 export const BROWSER_SERVER_DST = path.join(BUILD_TARGET_DIR, BROWSER_SERVER_DIRNAME);

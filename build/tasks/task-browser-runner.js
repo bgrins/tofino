@@ -47,8 +47,22 @@ gulp.task('dummy-runner:polyfill', () => {
     .pipe(gulp.dest(Paths.BROWSER_RUNNER_DST));
 });
 
+gulp.task('qbrt-runner:polyfill', () => {
+  const contents = `
+    import 'babel-polyfill';
+    import './${Paths.QBRT_RUNNER_ENTRY_FILENAME}';
+  `;
+  return file(Paths.QBRT_RUNNER_POLYFILL_FILENAME, contents, { src: true })
+    .pipe(debug({ title: 'Creating' }))
+    .pipe(sourcemaps.init())
+    .pipe(babel(fs.readJsonSync('.babelrc')))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest(Paths.BROWSER_RUNNER_DST));
+});
+
 gulp.task('browser-runner:build', gulp.series(
   'browser-runner:babel',
   'electron-runner:polyfill',
   'dummy-runner:polyfill',
+  'qbrt-runner:polyfill',
 ));

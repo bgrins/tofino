@@ -7,6 +7,7 @@
     "start": "cross-env NODE_ENV=production gulp build+start --obj-dir-name production-electron",
     "serve": "cross-env NODE_ENV=development gulp build+serve --obj-dir-name development-headless",
     "serve+logging": "cross-env NODE_ENV=development LOGGING=on gulp build+serve --obj-dir-name development-headless",
+    "qbrt": "cross-env NODE_ENV=production gulp build+start --platform qbrt --obj-dir-name production-electron",
     "dev": "cross-env NODE_ENV=development gulp build+start --obj-dir-name development-electron",
     "dev+logging": "cross-env NODE_ENV=development LOGGING=on gulp build+start --obj-dir-name development-electron",
     "package": "gulp package --obj-dir-name electron-package"

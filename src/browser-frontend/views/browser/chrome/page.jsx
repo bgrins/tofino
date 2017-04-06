@@ -21,6 +21,7 @@ import Styles from './page.css';
 import WebContents from '../../../../shared/widgets/web-contents';
 import WebView from '../../../../shared/widgets/web-contents/webview';
 import IframeDummyBrowser from '../../../../shared/widgets/web-contents/iframe-dummy-browser';
+import IframeMozBrowser from '../../../../shared/widgets/web-contents/iframe-mozbrowser';
 
 @connect(() => ({
   platform: Meta.PLATFORM,
@@ -79,10 +80,13 @@ export default class Page extends PureComponent {
 
   render() {
     let impl;
+    console.log(this.props.platform);
     if (this.props.platform === 'electron') {
       impl = WebView;
     } else if (this.props.platform === 'dummy') {
       impl = IframeDummyBrowser;
+    } else if (this.props.platform === 'qbrt') {
+      impl = IframeMozBrowser;
     } else {
       throw new Error('Unknown browser runner platform.');
     }

@@ -31,12 +31,19 @@ gulp.task('start', async () => {
     ...(yargs.argv.mockOs ? ['--mock-os', yargs.argv.mockOs] : []),
   ];
 
-  const electron = process.platform === 'win32'
-    ? 'electron.cmd'
-    : 'electron';
+  if (yargs.argv.platform === 'qbrt') {
+    return Promise.all([
+      spawn('node', Paths.QBRT_RUNNER_DST_MAIN, runnerArgs, { logger }),
+      spawn('node', Paths.BROWSER_SERVER_DST_MAIN, args, { logger }),
+    ]);
+  } else {
+    const electron = process.platform === 'win32'
+      ? 'electron.cmd'
+      : 'electron';
 
-  return Promise.all([
-    spawn(electron, Paths.ELECTRON_RUNNER_DST_MAIN, runnerArgs, { logger }),
-    spawn('node', Paths.BROWSER_SERVER_DST_MAIN, args, { logger }),
-  ]);
+    return Promise.all([
+      spawn(electron, Paths.ELECTRON_RUNNER_DST_MAIN, runnerArgs, { logger }),
+      spawn('node', Paths.BROWSER_SERVER_DST_MAIN, args, { logger }),
+    ]);
+  }
 });
