@@ -8,7 +8,6 @@ import './build/tasks/task-browser-shared';
 import './build/tasks/task-browser-runner';
 import './build/tasks/task-browser-server';
 import './build/tasks/task-browser-frontend';
-import './build/tasks/task-serve';
 import './build/tasks/task-start';
 import './build/tasks/task-build';
 import './build/tasks/task-package';
