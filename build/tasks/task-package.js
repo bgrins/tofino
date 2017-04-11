@@ -44,13 +44,25 @@ gulp.task('package:copy-node', () => {
   return fs.copy(src, dst);
 });
 
-gulp.task('package:bundle-electron-app', (cb) => {
-  packager({
-    platform: yargs.argv.platform || process.platform,
-    dir: Paths.BUILD_TARGET_DIR,
-    out: Paths.DIST_DIR,
-    overwrite: true,
-  }, cb);
+gulp.task('package:bundle-app', (cb) => {
+  if (yargs.argv.platform === 'electron') {
+    packager({
+      platform: yargs.argv.platform || process.platform,
+      dir: Paths.BUILD_TARGET_DIR,
+      out: Paths.DIST_DIR,
+      overwrite: true,
+    }, cb);
+  }
+
+  if (yargs.argv.platform === 'qbrt') {
+    const qbrt = process.platform === 'win32'
+      ? 'qbrt.cmd'
+      : 'qbrt';
+    console.log("Packaging qbrt", Paths.BUILD_TARGET_DIR);
+    return Promise.all([
+      spawn(qbrt, Paths.BUILD_TARGET_DIR, [], { logger }),
+    ]);
+  }
 });
 
 gulp.task('package', gulp.series(
@@ -59,5 +71,5 @@ gulp.task('package', gulp.series(
   'package:write-manifest',
   'package:install-modules',
   'package:copy-node',
-  'package:bundle-electron-app',
+  'package:bundle-app',
 ));

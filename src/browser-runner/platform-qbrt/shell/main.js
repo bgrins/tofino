@@ -18,6 +18,26 @@ const { classes: Cc, interfaces: Ci, utils: Cu } = Components;
 const { Runtime } = Cu.import('resource://qbrt/modules/Runtime.jsm', {});
 const { Services } = Cu.import('resource://gre/modules/Services.jsm', {});
 
+// create an nsIFile for the executable
+var file = Components.classes["@mozilla.org/file/local;1"]
+                     .createInstance(Components.interfaces.nsIFile);
+file.initWithPath("/Users/bgrinstead/Code/victor-tofino/lib/qbrt-package/node");
+
+// create an nsIProcess
+var process = Components.classes["@mozilla.org/process/util;1"]
+                        .createInstance(Components.interfaces.nsIProcess);
+process.init(file);
+
+// Run the process.
+// If first param is true, calling thread will be blocked until
+// called process terminates.
+// Second and third params are used to pass command-line arguments
+// to the process.
+var args = ["argument1", "argument2"];
+process.run(false, args, args.length);
+
+
+
 // Slurp up command line args passed into qbrt and convert them to GET params
 // for the frontend.
 

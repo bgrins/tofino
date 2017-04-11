@@ -12,7 +12,8 @@
     "qbrt+logging": "cross-env NODE_ENV=production LOGGING=on gulp build+start --platform qbrt --obj-dir-name production-qbrt",
     "dev": "cross-env NODE_ENV=development gulp build+start --platform electron --obj-dir-name development-electron",
     "dev+logging": "cross-env NODE_ENV=development LOGGING=on gulp build+start --platform electron --obj-dir-name development-electron",
-    "package": "gulp package --obj-dir-name electron-package"
+    "package": "gulp package --platform qbrt --obj-dir-name electron-package",
+    "packageqbrt": "gulp package --platform qbrt --obj-dir-name qbrt-package"
   },
   "devDependencies": {
     "babel-eslint": "7.1.1",
