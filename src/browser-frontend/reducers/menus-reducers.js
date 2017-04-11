@@ -10,16 +10,20 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-import reduceReducers from 'reduce-reducers';
+import { handleActions } from 'redux-actions';
 
-import pagesReducers from './pages-reducers';
-import pagesNavBarReducers from './pages-navbar-reducers';
-import pagesTabBarReducers from './pages-tabbar-reducers';
-import menusReducers from './menus-reducers';
+import Model from '../model';
+import MenusModelActions from '../actions/menus-model-actions';
 
-export default reduceReducers(
-  pagesReducers,
-  pagesNavBarReducers,
-  pagesTabBarReducers,
-  menusReducers,
-);
+function openAppMenu(state) {
+  return state.setIn(['ui', 'menus', 'appMenuOpen'], true);
+}
+
+function closeAppMenu(state) {
+  return state.setIn(['ui', 'menus', 'appMenuOpen'], false);
+}
+
+export default handleActions({
+  [MenusModelActions.openAppMenu]: openAppMenu,
+  [MenusModelActions.closeAppMenu]: closeAppMenu,
+}, new Model());

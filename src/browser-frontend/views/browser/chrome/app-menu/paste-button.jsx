@@ -1,3 +1,4 @@
+
 /*
 Copyright 2016 Mozilla
 
@@ -10,30 +11,36 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-import React, { PropTypes } from 'react';
-import CSSModules from 'react-css-modules';
+import React, { PureComponent, PropTypes } from 'react';
 
-import WidgetComponent from './helpers/widget-component';
-import Styles from './vertical-separator.css';
+import Button from '../../../../../shared/widgets/button';
+import FittedImage from '../../../../../shared/widgets/fitted-image';
 
-@CSSModules(Styles, {
-  allowMultiple: true,
-})
-export default class VerticalSeparator extends WidgetComponent {
+export default class PasteButton extends PureComponent {
+  handlePaste = () => {
+    // TODO
+  }
+
   render() {
     return (
-      <div
+      <Button
         className={this.props.className}
-        styleName="vertical-separator"
-      />
+        title="Paste"
+        onClick={this.handlePaste}
+      >
+        <FittedImage
+          src="var(--theme-app-menu-paste-button-image)"
+          width="14px"
+          height="14px"
+        />
+      </Button>
     );
   }
 }
-
-VerticalSeparator.propTypes = {
+PasteButton.propTypes = {
   className: PropTypes.string,
 };
 
-VerticalSeparator.defaultProps = {
+PasteButton.defaultProps = {
   className: '',
 };

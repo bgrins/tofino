@@ -1,3 +1,4 @@
+
 /*
 Copyright 2016 Mozilla
 
@@ -12,18 +13,21 @@ specific language governing permissions and limitations under the License.
 
 import React, { PureComponent } from 'react';
 
-import WindowControls from './chrome/decorations/window-controls';
-import TabBar from './chrome/tabbar';
-import AppMenu from './chrome/app-menu';
+import CustomMenuItem from '../../../../../shared/widgets/menus/custom-menu-item';
+import MenuItemLeftSpacing from '../../../../../shared/widgets/menus/common/menu-item-left-spacing';
+import MenuItemTextContents from '../../../../../shared/widgets/menus/common/menu-item-text-contents';
+import EditButtonsGroup from './edit-buttons-group';
 
-export default class Chrome extends PureComponent {
+export default class EditMenuItem extends PureComponent {
   render() {
     return (
-      <div>
-        <WindowControls />
-        <TabBar />
-        <AppMenu />
-      </div>
+      <CustomMenuItem>
+        <MenuItemLeftSpacing />
+        <MenuItemTextContents>
+          Edit
+        </MenuItemTextContents>
+        <EditButtonsGroup />
+      </CustomMenuItem>
     );
   }
 }

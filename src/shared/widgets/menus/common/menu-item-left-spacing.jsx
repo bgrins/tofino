@@ -1,3 +1,4 @@
+
 /*
 Copyright 2016 Mozilla
 
@@ -10,16 +11,18 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-import reduceReducers from 'reduce-reducers';
+import React, { PureComponent } from 'react';
+import CSSModules from 'react-css-modules';
 
-import pagesReducers from './pages-reducers';
-import pagesNavBarReducers from './pages-navbar-reducers';
-import pagesTabBarReducers from './pages-tabbar-reducers';
-import menusReducers from './menus-reducers';
+import Styles from './menu-item-left-spacing.css';
 
-export default reduceReducers(
-  pagesReducers,
-  pagesNavBarReducers,
-  pagesTabBarReducers,
-  menusReducers,
-);
+@CSSModules(Styles, {
+  allowMultiple: true,
+})
+export default class MenuItemLeftSpacing extends PureComponent {
+  render() {
+    return (
+      <div styleName="menu-item-left-spacing" />
+    );
+  }
+}

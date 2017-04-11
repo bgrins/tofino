@@ -10,16 +10,7 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-import reduceReducers from 'reduce-reducers';
-
-import pagesReducers from './pages-reducers';
-import pagesNavBarReducers from './pages-navbar-reducers';
-import pagesTabBarReducers from './pages-tabbar-reducers';
-import menusReducers from './menus-reducers';
-
-export default reduceReducers(
-  pagesReducers,
-  pagesNavBarReducers,
-  pagesTabBarReducers,
-  menusReducers,
-);
+.app-menu {
+  width: var(--theme-app-menu-width);
+  flex-direction: column;
+}

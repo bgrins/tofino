@@ -13,7 +13,9 @@ specific language governing permissions and limitations under the License.
 import Immutable from 'immutable';
 
 import UIPagesModel from './ui-pages-model';
+import UIMenusModel from './ui-menus-model';
 
 export default Immutable.Record({
   pages: new UIPagesModel(),
+  menus: new UIMenusModel(),
 });

@@ -10,16 +10,12 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-import reduceReducers from 'reduce-reducers';
+import * as RootSelectors from './root-selectors';
 
-import pagesReducers from './pages-reducers';
-import pagesNavBarReducers from './pages-navbar-reducers';
-import pagesTabBarReducers from './pages-tabbar-reducers';
-import menusReducers from './menus-reducers';
+export function getMenusUI(state) {
+  return RootSelectors.getAppUIState(state).get('menus');
+}
 
-export default reduceReducers(
-  pagesReducers,
-  pagesNavBarReducers,
-  pagesTabBarReducers,
-  menusReducers,
-);
+export function getAppMenuOpen(state) {
+  return getMenusUI(state).get('appMenuOpen');
+}

@@ -26,6 +26,9 @@
     // Airbnb style has some highly opinionated syntax restrictions, such as
     // preferring higher order functions instead of for..of loops.
     "no-restricted-syntax": ["off"],
+    // Allow empty constructors in classes so that `transform-class-properties`
+    // works properly, and thus we can use auto-bound methods in components.
+    "no-useless-constructor": ["off"],
     // Allow modules with a single named export. Since this is an ongoing WIP,
     // it's often the case that modules are intended to export multiple symbols.
     "import/prefer-default-export": ["off"],

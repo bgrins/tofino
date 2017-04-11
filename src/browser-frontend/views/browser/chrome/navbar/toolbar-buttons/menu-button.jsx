@@ -10,19 +10,30 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-import React, { PureComponent } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
+import { connect } from 'react-redux';
 
 import Styles from './menu-button.css';
 import Button from '../../../../../../shared/widgets/button';
 import FittedImage from '../../../../../../shared/widgets/fitted-image';
 
+import MenusModelActions from '../../../../../actions/menus-model-actions';
+import * as UIMenusSelectors from '../../../../../selectors/ui-menus-selectors';
+
+@connect(state => ({
+  appMenuOpen: UIMenusSelectors.getAppMenuOpen(state),
+}))
 @CSSModules(Styles, {
   allowMultiple: true,
 })
 export default class MenuButton extends PureComponent {
   handleClick = () => {
-    // TODO
+    if (this.props.appMenuOpen) {
+      this.props.dispatch(MenusModelActions.closeAppMenu());
+    } else {
+      this.props.dispatch(MenusModelActions.openAppMenu());
+    }
   }
 
   render() {
@@ -30,6 +41,7 @@ export default class MenuButton extends PureComponent {
       <Button
         title="Menu"
         styleName="menu-button"
+        className="app-menu-doorhanger-anchor"
         onClick={this.handleClick}
       >
         <FittedImage
@@ -41,3 +53,8 @@ export default class MenuButton extends PureComponent {
     );
   }
 }
+
+MenuButton.WrappedComponent.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  appMenuOpen: PropTypes.bool.isRequired,
+};

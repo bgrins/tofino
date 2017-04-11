@@ -1,0 +1,67 @@
+/*
+Copyright 2016 Mozilla
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.
+*/
+
+.doorhanger {
+  flex-shrink: 0;
+}
+
+.collapsed {
+  pointer-events: none;
+}
+
+.expanded .doorhanger {
+  opacity: var(--theme-doorhanger-expanded-opacity);
+  transform: var(--theme-doorhanger-expanded-transform);
+  transition: transform 0.2s var(--animation-curve), opacity 0.5s var(--animation-curve);
+}
+
+.collapsed .doorhanger {
+  opacity: var(--theme-doorhanger-collapsed-opacity);
+  transform: var(--theme-doorhanger-collapsed-transform);
+  transition: transform 3s var(--animation-curve), opacity 0.2s var(--animation-curve);
+}
+
+.expands-rightwards.expands-downwards {
+  transform-origin: left top;
+}
+
+.expands-leftwards.expands-downwards {
+  transform-origin: right top;
+}
+
+.expands-rightwards.expands-upwards {
+  transform-origin: left bottom;
+}
+
+.expands-leftwards.expands-upwards {
+  transform-origin: right bottom;
+}
+
+.arrow {
+  position: absolute;
+}
+
+.expands-downwards .arrow {
+  top: 0;
+}
+
+.expands-upwards .arrow {
+  bottom: 0;
+}
+
+.contents {
+  border: var(--theme-doorhanger-border-radius) solid var(--theme-doorhanger-border-color);
+  border-radius: var(--theme-doorhanger-border-radius);
+  background: var(--theme-doorhanger-background);
+  box-shadow: var(--theme-doorhanger-box-shadow);
+  color: var(--theme-doorhanger-color);
+}

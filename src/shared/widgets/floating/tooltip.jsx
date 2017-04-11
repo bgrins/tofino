@@ -12,44 +12,61 @@ specific language governing permissions and limitations under the License.
 
 import React, { PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
-import identity from 'lodash/identity';
 
-import WidgetComponent from './helpers/widget-component';
-import Styles from './button.css';
+import WidgetComponent from '../helpers/widget-component';
+import Styles from './tooltip.css';
+
+/**
+ * Tooltips are fixed positioned elements at specified locations, which display
+ * on top of any other element. They can contain any children.
+ */
 
 @CSSModules(Styles, {
   allowMultiple: true,
 })
-export default class Button extends WidgetComponent {
+export default class Tooltip extends WidgetComponent {
+  constructor(...args) {
+    super(...args);
+  }
+
+  setNodeRef = (e) => {
+    this._node = e;
+  }
+
+  getBoundingClientRect() {
+    return this._node.getBoundingClientRect();
+  }
+
   render() {
     return (
-      <button
-        title={this.props.title}
-        disabled={this.props.disabled}
-        styleName={`button ${this.props.disabled ? 'disabled' : 'enabled'}`}
+      <div
+        ref={this.setNodeRef}
         className={this.props.className}
-        onClick={this.props.disabled ? null : this.props.onClick}
+        styleName="tooltip"
+        style={{
+          left: this.props.position.x,
+          top: this.props.position.y,
+        }}
       >
         {this.props.children}
-      </button>
+      </div>
     );
   }
 }
 
-Button.propTypes = {
-  title: PropTypes.string.isRequired,
-  disabled: PropTypes.bool,
+Tooltip.propTypes = {
+  position: PropTypes.shape({
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired,
+  }).isRequired,
   className: PropTypes.string,
-  onClick: PropTypes.func,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
 };
 
-Button.defaultProps = {
-  disabled: false,
+Tooltip.defaultProps = {
   className: '',
-  onClick: identity,
   children: [],
 };

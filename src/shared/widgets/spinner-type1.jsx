@@ -10,10 +10,12 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-import React, { PureComponent } from 'react';
+import React from 'react';
 import FontAwesome from 'react-fontawesome';
 
-export default class SpinnerType1 extends PureComponent {
+import WidgetComponent from './helpers/widget-component';
+
+export default class SpinnerType1 extends WidgetComponent {
   render() {
     return (
       <FontAwesome name="spinner" spin />

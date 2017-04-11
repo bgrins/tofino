@@ -10,15 +10,16 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
 
+import WidgetComponent from './helpers/widget-component';
 import Styles from './input.css';
 
 @CSSModules(Styles, {
   allowMultiple: true,
 })
-export default class Input extends PureComponent {
+export default class Input extends WidgetComponent {
   render() {
     return (
       <input

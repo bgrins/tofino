@@ -12,44 +12,28 @@ specific language governing permissions and limitations under the License.
 
 import React, { PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
-import identity from 'lodash/identity';
 
 import WidgetComponent from './helpers/widget-component';
-import Styles from './button.css';
+import Styles from './horizontal-separator.css';
 
 @CSSModules(Styles, {
   allowMultiple: true,
 })
-export default class Button extends WidgetComponent {
+export default class HorizontalSeparator extends WidgetComponent {
   render() {
     return (
-      <button
-        title={this.props.title}
-        disabled={this.props.disabled}
-        styleName={`button ${this.props.disabled ? 'disabled' : 'enabled'}`}
+      <div
         className={this.props.className}
-        onClick={this.props.disabled ? null : this.props.onClick}
-      >
-        {this.props.children}
-      </button>
+        styleName="horizontal-separator"
+      />
     );
   }
 }
 
-Button.propTypes = {
-  title: PropTypes.string.isRequired,
-  disabled: PropTypes.bool,
+HorizontalSeparator.propTypes = {
   className: PropTypes.string,
-  onClick: PropTypes.func,
-  children: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.node),
-    PropTypes.node,
-  ]),
 };
 
-Button.defaultProps = {
-  disabled: false,
+HorizontalSeparator.defaultProps = {
   className: '',
-  onClick: identity,
-  children: [],
 };

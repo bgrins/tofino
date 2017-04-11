@@ -30,7 +30,7 @@ import IframeMozBrowser from '../../../../shared/widgets/web-contents/iframe-moz
   allowMultiple: true,
 })
 export default class Page extends PureComponent {
-  constructor(...args) { // eslint-disable-line
+  constructor(...args) {
     super(...args);
   }
 

@@ -16,10 +16,6 @@ import identity from 'lodash/identity';
 export default class WebContents extends PureComponent {
   static _instances = new Set()
 
-  constructor(...args) { // eslint-disable-line
-    super(...args);
-  }
-
   static getWebContentsWithId(id) {
     for (const instance of WebContents._instances) {
       if (instance.props.id === id) {
@@ -27,6 +23,10 @@ export default class WebContents extends PureComponent {
       }
     }
     return null;
+  }
+
+  constructor(...args) {
+    super(...args);
   }
 
   componentDidMount() {

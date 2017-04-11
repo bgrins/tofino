@@ -1,3 +1,4 @@
+
 /*
 Copyright 2016 Mozilla
 
@@ -10,46 +11,37 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-import React, { PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import CSSModules from 'react-css-modules';
-import identity from 'lodash/identity';
 
-import WidgetComponent from './helpers/widget-component';
-import Styles from './button.css';
+import Styles from './plain-menu-item.css';
+import CustomMenuItem from './custom-menu-item';
+import MenuItemLeftSpacing from './common/menu-item-left-spacing';
+import MenuItemTextContents from './common/menu-item-text-contents';
 
 @CSSModules(Styles, {
   allowMultiple: true,
 })
-export default class Button extends WidgetComponent {
+export default class PlainMenuItem extends PureComponent {
   render() {
     return (
-      <button
-        title={this.props.title}
-        disabled={this.props.disabled}
-        styleName={`button ${this.props.disabled ? 'disabled' : 'enabled'}`}
-        className={this.props.className}
-        onClick={this.props.disabled ? null : this.props.onClick}
-      >
-        {this.props.children}
-      </button>
+      <CustomMenuItem>
+        <MenuItemLeftSpacing />
+        <MenuItemTextContents>
+          {this.props.children}
+        </MenuItemTextContents>
+      </CustomMenuItem>
     );
   }
 }
 
-Button.propTypes = {
-  title: PropTypes.string.isRequired,
-  disabled: PropTypes.bool,
-  className: PropTypes.string,
-  onClick: PropTypes.func,
+PlainMenuItem.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
 };
 
-Button.defaultProps = {
-  disabled: false,
-  className: '',
-  onClick: identity,
+PlainMenuItem.defaultProps = {
   children: [],
 };

@@ -10,16 +10,13 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 */
 
-import reduceReducers from 'reduce-reducers';
+import { Component } from 'react';
 
-import pagesReducers from './pages-reducers';
-import pagesNavBarReducers from './pages-navbar-reducers';
-import pagesTabBarReducers from './pages-tabbar-reducers';
-import menusReducers from './menus-reducers';
+import { shouldComponentWithPlainJsPropsUpdate } from './should-component-update';
 
-export default reduceReducers(
-  pagesReducers,
-  pagesNavBarReducers,
-  pagesTabBarReducers,
-  menusReducers,
-);
+export default class WidgetComponent extends Component {
+  constructor(...args) {
+    super(...args);
+    this.shouldComponentUpdate = shouldComponentWithPlainJsPropsUpdate.bind(this);
+  }
+}

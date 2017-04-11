@@ -15,7 +15,7 @@ import React, { PureComponent } from 'react';
 import WebContents from '.';
 
 export default class WebView extends PureComponent {
-  constructor(...args) { // eslint-disable-line
+  constructor(...args) {
     super(...args);
   }
 

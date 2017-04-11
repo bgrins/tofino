@@ -19,7 +19,7 @@ import WebContents from '.';
 // https://github.com/mdn/browser-api-demo/blob/master/main.js
 // https://github.com/mozilla/positron-electron/blob/3345aa05f8d55e0c91abbf52489b6c7e40a336d5/lib/renderer/web-view/web-view.js#L300-L360
 export default class IframeMozBrowser extends PureComponent {
-  constructor(...args) { // eslint-disable-line
+  constructor(...args) {
     super(...args);
   }
 
