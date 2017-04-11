@@ -18,23 +18,33 @@ const { classes: Cc, interfaces: Ci, utils: Cu } = Components;
 const { Runtime } = Cu.import('resource://qbrt/modules/Runtime.jsm', {});
 const { Services } = Cu.import('resource://gre/modules/Services.jsm', {});
 
-// create an nsIFile for the executable
-var file = Components.classes["@mozilla.org/file/local;1"]
-                     .createInstance(Components.interfaces.nsIFile);
-file.initWithPath("/Users/bgrinstead/Code/victor-tofino/lib/qbrt-package/node");
+// This is taken from https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XPCOM/Reference/Interface/nsIProcess#Example
+function spawnServer() {
+  // TODO: Get rid of all hardcoded paths
+  var file = Components.classes["@mozilla.org/file/local;1"]
+                       .createInstance(Components.interfaces.nsIFile);
+  file.initWithPath("/Users/bgrinstead/Code/victor-tofino/lib/qbrt-package/node");
+  var server = "/Users/bgrinstead/Code/victor-tofino/lib/qbrt-package/browser-server/index.js";
+  var process = Components.classes["@mozilla.org/process/util;1"]
+                          .createInstance(Components.interfaces.nsIProcess);
+  process.init(file);
 
-// create an nsIProcess
-var process = Components.classes["@mozilla.org/process/util;1"]
-                        .createInstance(Components.interfaces.nsIProcess);
-process.init(file);
+  // TODO: Handle errors
+  var args = [server, "--hostname", "localhost", "--port", "9000"];
+  process.run(false, args, args.length);
+}
+//
+// function loadFrontend() {
+//
+// }
 
-// Run the process.
-// If first param is true, calling thread will be blocked until
-// called process terminates.
-// Second and third params are used to pass command-line arguments
-// to the process.
-var args = ["argument1", "argument2"];
-process.run(false, args, args.length);
+// TODO: Only spawn server in packaged builds?
+const IS_PACKAGED_BUILD = true;
+if (IS_PACKAGED_BUILD) {
+  spawnServer();
+}
+// node lib/qbrt-package/browser-server/index.js --hostname localhost --port 9000
+// node node_modules/qbrt/bin/cli.js run src/browser-runner/platform-qbrt/shell/
 
 
 
@@ -66,12 +76,6 @@ const WINDOW_FEATURES = [
   'scrollbars',
 ].join(',');
 
-// On startup, activate ourselves, since starting up from Node doesn't do this.
-// TODO: do this by default for all apps started via Node.
-if (Services.appinfo.OS === 'Darwin') {
-  Cc['@mozilla.org/widget/macdocksupport;1'].getService(Ci.nsIMacDockSupport).activateApplication(true);
-}
-
 // TODO: Find a way to pass the correct browser-frontend URL down to this process
 const url = Runtime.commandLineArgs[0] || Runtime.packageJSON.mainURL || 'index.html';
 const argument = Cc['@mozilla.org/supports-string;1'].createInstance(Ci.nsISupportsString);
@@ -81,3 +85,9 @@ argument.data = url;
 
 const win = Services.ww.openWindow(null, SHELL_URL, '_blank', WINDOW_FEATURES, argument);
 Runtime.openDevTools(win);
+
+// On startup, activate ourselves, since starting up from Node doesn't do this.
+// TODO: do this by default for all apps started via Node.
+if (Services.appinfo.OS === 'Darwin') {
+  Cc['@mozilla.org/widget/macdocksupport;1'].getService(Ci.nsIMacDockSupport).activateApplication(true);
+}
