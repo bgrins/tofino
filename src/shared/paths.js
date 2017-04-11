@@ -85,8 +85,9 @@ export const DUMMY_RUNNER_DST_MAIN = path.join(BROWSER_RUNNER_DST, DUMMY_RUNNER_
 export const QBRT_RUNNER_ENTRY_FILENAME = 'platform-qbrt/index.js';
 export const QBRT_RUNNER_DST_MAIN = path.join(BROWSER_RUNNER_DST, QBRT_RUNNER_ENTRY_FILENAME);
 
-export const QBRT_RUNNER_SHELL_SRC = path.join(BROWSER_RUNNER_SRC, 'platform-qbrt', 'shell');
-export const QBRT_RUNNER_SHELL_DST = path.join(BROWSER_RUNNER_DST, 'platform-qbrt', 'shell');
+export const QBRT_SHELL_DIRNAME = 'platform-qbrt/shell';
+export const QBRT_RUNNER_SHELL_SRC = IS_PACKAGED_BUILD ? undefined : path.join(BROWSER_RUNNER_SRC, QBRT_SHELL_DIRNAME);
+export const QBRT_RUNNER_SHELL_DST = path.join(BROWSER_RUNNER_DST, QBRT_SHELL_DIRNAME);
 
 /**
  * Browser server paths.

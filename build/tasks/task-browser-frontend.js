@@ -22,18 +22,16 @@ const WEBPACK_STATS_OPTIONS = {
 
 let gWebpackDevServer;
 
-gulp.task('browser-frontend:copy-html', () => {
-  return gulp.src(`${Paths.BROWSER_FRONTEND_SRC}/**/*.html`)
+gulp.task('browser-frontend:copy-html', () =>
+  gulp.src(`${Paths.BROWSER_FRONTEND_SRC}/**/*.html`)
     .pipe(changed(Paths.BROWSER_FRONTEND_DST))
     .pipe(debug({ title: `Running ${colors.cyan('cp')}` }))
-    .pipe(gulp.dest(Paths.BROWSER_FRONTEND_DST));
-});
+    .pipe(gulp.dest(Paths.BROWSER_FRONTEND_DST)));
 
-gulp.task('browser-frontend:copy-to-qbrt-shell', () => {
-  return gulp.src(`${Paths.BROWSER_FRONTEND_DST}/**/*`)
+gulp.task('browser-frontend:copy-to-qbrt-shell', () =>
+  gulp.src(`${Paths.BROWSER_FRONTEND_DST}/**/*`)
     .pipe(changed(Paths.QBRT_RUNNER_SHELL_DST))
-    .pipe(gulp.dest(Paths.QBRT_RUNNER_SHELL_DST));
-});
+    .pipe(gulp.dest(Paths.QBRT_RUNNER_SHELL_DST)));
 
 gulp.task('browser-frontend:webpack', () => new Promise((resolve, reject) => {
   if (process.env.NODE_ENV !== 'development') {
