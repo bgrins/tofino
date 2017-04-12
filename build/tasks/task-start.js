@@ -38,8 +38,12 @@ gulp.task('start', async () => {
   }
 
   if (yargs.argv.platform === 'qbrt') {
+    const qbrt = process.platform === 'win32'
+      ? 'qbrt.cmd'
+      : 'qbrt';
+
     return Promise.all([
-      spawn('node', Paths.QBRT_RUNNER_DST_MAIN, args, { logger }),
+      spawn(qbrt, 'run', [Paths.QBRT_RUNNER_SHELL_DST], { logger }),
       spawn('node', Paths.BROWSER_SERVER_DST_MAIN, args, { logger }),
     ]);
   }

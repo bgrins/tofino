@@ -18,19 +18,36 @@ export default class Client {
   constructor({ endpoint, store, logger }) {
     this._store = store;
     this._logger = logger;
-    this._connect(endpoint);
+    dump("Client constructed, connecting!\n");
+    this._logger.log(colors.green('Client constructed, connecting'));
+    this.connect(endpoint);
   }
 
-  _connect(endpoint) {
+  connect(endpoint) {
     this._connected = new Promise(async (resolve) => {
-      const pipe = io(await endpoint);
-      pipe.on('connect', () => resolve(pipe));
+      dump("Awaiting endpoint: " + endpoint + "\n");
+      endpoint.then((val) => {
+        dump("Endpoint gotten: " + val + "\n");
+      });
+      const ep = await endpoint;
+      dump("Endpoint received: " + ep + "\n");
+      console.log("Connecting to ", ep);
+      const pipe = io(ep);
+      pipe.on('error', () => { dump("ERROR\n"); });
+      pipe.on('connect', () => { dump("connect\n");resolve(pipe) });
     });
   }
 
   async listen() {
+    this._logger.log(colors.green('Awaiting connection from client'));
+    dump("Awaiting connection from client\n");
+    this._connected.then(() => {
+      dump("Received connection from client (non await)\n");
+    });
     const pipe = await this._connected;
+    dump("Received connection from client\n");
     pipe.on('message', (msg) => {
+      dump("Received message: " + msg + "\n");
       const { type, payload } = JSON.parse(msg);
       this._logger.log(colors.green('⇠'), colors.cyan(msg));
       this._store.dispatch(createAction(type, () => payload, () => this)());
@@ -39,7 +56,9 @@ export default class Client {
 
   async send(msg) {
     const str = JSON.stringify(msg);
+    dump("Sending from client" + str + "\n");
     const pipe = await this._connected;
+    dump("Sent from client" + str + "\n");
     pipe.emit('message', str);
     this._logger.log(colors.green('⇢'), colors.blue(str));
   }

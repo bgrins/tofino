@@ -27,9 +27,9 @@ export default class Logger {
   }
 
   log(...args) {
-    if (!this._options.always && process.env.LOGGING !== 'on') {
-      return;
-    }
+    // if (!this._options.always && process.env.LOGGING !== 'on') {
+    //   return;
+    // }
     this._write('log', df(Date.now(), '[HH:MM:ss:l]'), colors.bold(this._name), ...args);
   }
 

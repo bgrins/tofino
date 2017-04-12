@@ -53,7 +53,7 @@
     "inline-environment-variables-webpack-plugin": "1.1.0",
     "is-builtin-module": "1.0.0",
     "node-libs-browser": "2.0.0",
-    "qbrt": "0.1.2",
+    "qbrt": "file:../qbrt",
     "style-loader": "0.16.0",
     "stylelint-config-css-modules": "0.1.0",
     "stylelint-config-idiomatic-order": "github:bouwwouw/stylelint-config-idiomatic-order",
