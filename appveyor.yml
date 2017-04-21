@@ -16,7 +16,7 @@ cache:
 branches:
   only:
     - bfg-browser
-    - mentat-test
+    - deployment-test
 
 test_script:
   - npm run test
